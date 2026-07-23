@@ -5,23 +5,27 @@ import PackageDescription
 
 let package = Package(
     name: "CachedAsyncImage",
+    platforms: [
+      .iOS("26.0"),
+      .macOS(.v13)
+    ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
-        .library(
-            name: "CachedAsyncImage",
-            targets: ["CachedAsyncImage"]
-        ),
+      // Products define the executables and libraries a package produces, making them visible to other packages.
+      .library(
+        name: "CachedAsyncImage",
+        targets: ["CachedAsyncImage"]
+      )
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
-        .target(
-            name: "CachedAsyncImage"
-        ),
-        .testTarget(
-            name: "CachedAsyncImageTests",
-            dependencies: ["CachedAsyncImage"]
-        ),
+      // Targets are the basic building blocks of a package, defining a module or a test suite.
+      // Targets can depend on other targets in this package and products from dependencies.
+      .target(
+        name: "CachedAsyncImage"
+      ),
+      .testTarget(
+          name: "CachedAsyncImageTests",
+          dependencies: ["CachedAsyncImage"]
+      )
     ],
     swiftLanguageModes: [.v6]
 )
