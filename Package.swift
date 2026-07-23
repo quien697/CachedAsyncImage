@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "CachedAsyncImage",
     platforms: [
-      .iOS("26.0"),
-      .macOS(.v13)
+      .iOS("17.0"),
+      .macOS(.v12)
     ],
     products: [
       // Products define the executables and libraries a package produces, making them visible to other packages.
