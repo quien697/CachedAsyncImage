@@ -15,8 +15,14 @@ import Testing
   /// Creates a fresh, empty temporary directory for an isolated cache under test.
   private func makeTempDirectory() -> URL {
     let directory = FileManager.default.temporaryDirectory
-      .appendingPathComponent("DiskCacheTests-\(UUID().uuidString)", isDirectory: true)
-    try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+      .appendingPathComponent(
+        "DiskCacheTests-\(UUID().uuidString)",
+        isDirectory: true
+      )
+    try? FileManager.default.createDirectory(
+      at: directory,
+      withIntermediateDirectories: true
+    )
     return directory
   }
 

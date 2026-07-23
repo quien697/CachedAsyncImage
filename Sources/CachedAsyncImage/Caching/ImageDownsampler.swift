@@ -5,9 +5,9 @@
 //  Created by Quien on 2026-07-22.
 //
 
+import CoreGraphics
 import Foundation
 import ImageIO
-import CoreGraphics
 
 /// Decodes image data downsampled to a target size using ImageIO,
 /// so a large source image is never fully decoded just to be displayed small.
@@ -17,7 +17,9 @@ enum ImageDownsampler {
   /// if `data` is not decodable.
   static func downsample(_ data: Data, maxPixelSize: CGFloat) -> CGImage? {
     let sourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
-    guard let source = CGImageSourceCreateWithData(data as CFData, sourceOptions) else {
+    guard
+      let source = CGImageSourceCreateWithData(data as CFData, sourceOptions)
+    else {
       return nil
     }
     let options: [CFString: Any] = [
@@ -26,6 +28,10 @@ enum ImageDownsampler {
       kCGImageSourceShouldCacheImmediately: true,
       kCGImageSourceThumbnailMaxPixelSize: maxPixelSize
     ]
-    return CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary)
+    return CGImageSourceCreateThumbnailAtIndex(
+      source,
+      0,
+      options as CFDictionary
+    )
   }
 }

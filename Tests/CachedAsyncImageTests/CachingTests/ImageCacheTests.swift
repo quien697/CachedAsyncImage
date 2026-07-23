@@ -5,10 +5,10 @@
 //  Created by Quien on 2026-07-22.
 //
 
-import Foundation
-import Testing
-import ImageIO
 import CoreGraphics
+import Foundation
+import ImageIO
+import Testing
 import UniformTypeIdentifiers
 
 @testable import CachedAsyncImage
@@ -23,28 +23,45 @@ import UniformTypeIdentifiers
 
   private func makeTempDirectory() -> URL {
     let directory = FileManager.default.temporaryDirectory
-      .appendingPathComponent("ImageCacheTests-\(UUID().uuidString)", isDirectory: true)
-    try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+      .appendingPathComponent(
+        "ImageCacheTests-\(UUID().uuidString)",
+        isDirectory: true
+      )
+    try? FileManager.default.createDirectory(
+      at: directory,
+      withIntermediateDirectories: true
+    )
     return directory
   }
 
   private func makePNGData(width: Int, height: Int) -> Data {
     let context = CGContext(
-      data: nil, width: width, height: height, bitsPerComponent: 8, bytesPerRow: 0,
+      data: nil,
+      width: width,
+      height: height,
+      bitsPerComponent: 8,
+      bytesPerRow: 0,
       space: CGColorSpaceCreateDeviceRGB(),
-      bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+      bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+    )!
     context.setFillColor(CGColor(red: 0, green: 0, blue: 1, alpha: 1))
     context.fill(CGRect(x: 0, y: 0, width: width, height: height))
     let data = NSMutableData()
     let destination = CGImageDestinationCreateWithData(
-      data, UTType.png.identifier as CFString, 1, nil)!
+      data,
+      UTType.png.identifier as CFString,
+      1,
+      nil
+    )!
     CGImageDestinationAddImage(destination, context.makeImage()!, nil)
     CGImageDestinationFinalize(destination)
     return data as Data
   }
 
   @Test func deduplicatesConcurrentLoadsOfSameURL() async throws {
-    let cache = ImageCache(disk: DiskCache(directory: makeTempDirectory(), maxBytes: 10_000_000))
+    let cache = ImageCache(
+      disk: DiskCache(directory: makeTempDirectory(), maxBytes: 10_000_000)
+    )
     let counter = CallCounter()
     let pngData = makePNGData(width: 100, height: 100)
     let loader: @Sendable (URL) async throws -> Data = { _ in
@@ -62,7 +79,9 @@ import UniformTypeIdentifiers
   }
 
   @Test func secondRequestServedFromCacheWithoutReloading() async throws {
-    let cache = ImageCache(disk: DiskCache(directory: makeTempDirectory(), maxBytes: 10_000_000))
+    let cache = ImageCache(
+      disk: DiskCache(directory: makeTempDirectory(), maxBytes: 10_000_000)
+    )
     let counter = CallCounter()
     let pngData = makePNGData(width: 100, height: 100)
     let loader: @Sendable (URL) async throws -> Data = { _ in

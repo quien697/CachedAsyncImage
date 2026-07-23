@@ -5,8 +5,8 @@
 //  Created by Quien on 2026-07-22.
 //
 
-import Foundation
 import CommonCrypto
+import Foundation
 
 /// A bounded, on-disk data cache. Keys are hashed to stable filenames so entries survive
 /// across app launches. When the total size exceeds `maxBytes`, least-recently-used entries
@@ -26,7 +26,10 @@ actor DiskCache {
   init(directory: URL, maxBytes: Int) {
     self.directory = directory
     self.maxBytes = maxBytes
-    try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+    try? FileManager.default.createDirectory(
+      at: directory,
+      withIntermediateDirectories: true
+    )
   }
 
   /// Writes `data` under `key`, overwriting any existing entry, then evicts LRU entries if
@@ -51,7 +54,9 @@ actor DiskCache {
   /// recently used.
   func data(forKey key: String) -> Data? {
     let name = Self.filename(forKey: key)
-    guard let data = try? Data(contentsOf: directory.appendingPathComponent(name)) else {
+    guard
+      let data = try? Data(contentsOf: directory.appendingPathComponent(name))
+    else {
       return nil
     }
     sequence += 1
@@ -61,9 +66,12 @@ actor DiskCache {
 
   private func evictIfNeeded() {
     while totalBytes > maxBytes,
-      let victim = entries.min(by: { $0.value.sequence < $1.value.sequence })?.key
+      let victim = entries.min(by: { $0.value.sequence < $1.value.sequence })?
+        .key
     {
-      try? FileManager.default.removeItem(at: directory.appendingPathComponent(victim))
+      try? FileManager.default.removeItem(
+        at: directory.appendingPathComponent(victim)
+      )
       totalBytes -= entries[victim]?.size ?? 0
       entries[victim] = nil
     }

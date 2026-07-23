@@ -47,8 +47,10 @@ public struct CachedAsyncImage<Content: View>: View {
     let maxPixelSize = max(targetSize.width, targetSize.height) * displayScale
     do {
       if let image = try await ImageCache.shared.image(
-        for: url, maxPixelSize: maxPixelSize, loader: Self.load(from:))
-      {
+        for: url,
+        maxPixelSize: maxPixelSize,
+        loader: Self.load(from:)
+      ) {
         phase = .success(Image(decorative: image.cgImage, scale: displayScale))
       } else {
         phase = .failure(CachedAsyncImageError.decodingFailed)

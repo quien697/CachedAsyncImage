@@ -5,10 +5,10 @@
 //  Created by Quien on 2026-07-22.
 //
 
-import Foundation
-import Testing
-import ImageIO
 import CoreGraphics
+import Foundation
+import ImageIO
+import Testing
 import UniformTypeIdentifiers
 
 @testable import CachedAsyncImage
@@ -32,7 +32,11 @@ import UniformTypeIdentifiers
 
     let data = NSMutableData()
     let destination = CGImageDestinationCreateWithData(
-      data, UTType.png.identifier as CFString, 1, nil)!
+      data,
+      UTType.png.identifier as CFString,
+      1,
+      nil
+    )!
     CGImageDestinationAddImage(destination, image, nil)
     CGImageDestinationFinalize(destination)
     return data as Data
@@ -49,7 +53,10 @@ import UniformTypeIdentifiers
   }
 
   @Test func returnsNilForInvalidData() {
-    let image = ImageDownsampler.downsample(Data("not an image".utf8), maxPixelSize: 10)
+    let image = ImageDownsampler.downsample(
+      Data("not an image".utf8),
+      maxPixelSize: 10
+    )
 
     #expect(image == nil)
   }
