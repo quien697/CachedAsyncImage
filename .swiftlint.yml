@@ -1,0 +1,13 @@
+excluded:
+  - .build
+  - .swiftpm
+
+disabled_rules:
+  - trailing_whitespace
+  - opening_brace
+
+line_length:
+  warning: 100
+  error: 150
+  ignores_comments: true
+  ignores_urls: true
